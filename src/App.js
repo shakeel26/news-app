@@ -39,8 +39,7 @@ const App = () => {
     }
 
     const showNews = () => {
-          return  news.map((n, i) => (<p key={i}> {n.title} </p>))
-
+        return  news.map((n, i) => (<div><p key={i}> {n.title} </p>  <hr></hr> </div>))
     }
 
     return (
