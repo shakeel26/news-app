@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Component, useState, useEffect} from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+// state
+    const [news, setNews] = useState([])
+    const [query, setQuery] = useState('react')
+    const [url, setUrl] = useState('http://hn.algolia.com/api/v1/search?query=react')
+    const [loading, setLoading] = useState(false)
+    //fetch news
+
+    const fetchNews = () => {
+        //set loading true
+        setLoading(true)
+        fetch(url)
+            .then(result => result.json())
+            .then(data => (setNews(data.hits), setLoading(false)))
+            .catch(error => console.log(error.toString()))
+    };
+
+    useEffect(() => {
+        fetchNews()
+    }, [url])
+
+    const hadleChange = (e) => {
+        setQuery(e.target.value)
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setUrl(`http://hn.algolia.com/api/v1/search?query=${query}`)
+    }
+
+    const showLoading = () => (loading ? <h2>Loading ... </h2> : '')
+
+    const searchForm = () => {
+        return <form onSubmit={handleSubmit}>
+            <input type="text" value={query} onChange={hadleChange}/>
+            <button>Search</button>
+        </form>
+    }
+
+    const showNews = () => {
+          return  news.map((n, i) => (<p key={i}> {n.title} </p>))
+
+    }
+
+    return (
+        <div>
+            <h2> News</h2>
+            {showLoading()}
+            {searchForm()}
+            {showNews()}
+        </div>
+    )
+};
+
 
 export default App;
