@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from "react";
+import React, { useState, useEffect} from "react";
 
 const App = () => {
 // state
@@ -19,7 +19,7 @@ const App = () => {
 
     useEffect(() => {
         fetchNews()
-    }, [url])
+    },[url])
 
     const hadleChange = (e) => {
         setQuery(e.target.value)
